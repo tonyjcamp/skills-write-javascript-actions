@@ -15,90 +15,69 @@ _Write your own GitHub JavaScript Action and automate customized tasks unique to
 </header>
 
 <!--
-  <<< Author notes: Step 1 >>>
-  Choose 3-5 steps for your course.
-  The first step is always the hardest, so pick something easy!
-  Link to docs.github.com for further explanations.
-  Encourage users to open new tabs for steps!
+  <<< Author notes: Step 3 >>>
+  Start this step by acknowledging the previous step.
+  Define terms and link to docs.github.com.
 -->
 
-## Step 1: Initialize a new JavaScript project
+## Step 3: Create the metadata file
 
-_Welcome to the course :tada:_
+_Nice work configuring your action :smile:_
 
-### Configuring a workflow
+## Action metadata
 
-Actions are enabled on your repository by default, but we still have to tell our repository to use them. We do this by creating a workflow file in our repository.
+Every GitHub Action that we write needs to be accompanied by a metadata file. This file has a few rules to it, as are indicated below:
 
-A **workflow** file can be thought of as the recipe for automating a task. They house the start to finish instructions, in the form of `jobs` and `steps`, for what should happen based on specific triggers.
+- Filename **must** be `action.yml`.
+- Required for both Docker container and JavaScript actions.
+- Written in YAML syntax.
 
-Your repository can contain multiple **workflow** files that carry out a wide variety of tasks. It is important to consider this when deciding on a name for your **workflow**. The name you choose should reflect the tasks being performed.
+This file defines the following information about your action:
 
-_In our case, we will use this one **workflow** file for many things, which leads us to break this convention for teaching purposes._
+| Parameter   | Description                                                                                                                                            |      Required      |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------: |
+| Name        | The name of your action. Helps visually identify the actions in a job.                                                                                 | :white_check_mark: |
+| Description | A summary of what your action does.                                                                                                                    | :white_check_mark: |
+| Inputs      | Input parameters allow you to specify data that the action expects to use during runtime. These parameters become environment variables in the runner. |        :x:         |
+| Outputs     | Specifies the data that subsequent actions can use later in the workflow after the action that defines these outputs has run.                          |        :x:         |
+| Runs        | The command to run when the action executes.                                                                                                           | :white_check_mark: |
+| Branding    | You can use a color and Feather icon to create a badge to personalize and distinguish your action in GitHub Marketplace.                               |        :x:         |
 
-Read more about [workflows](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-a-workflow#choosing-the-type-of-actions-for-your-workflow)
+---
 
-## On to your development environment
+Read more about [Action metadata](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions)
 
-Our JavaScript actions are going to leverage the [GitHub ToolKit](https://github.com/actions/toolkit) for developing GitHub Actions.
+### :keyboard: Activity 1: Create the metadata file
 
-This is an external library that we will install using `npm` which means that you will need [Node.js](https://nodejs.org/) installed.
+All of the following steps take place inside of the `.github/actions/joke-action` directory.
 
-We find writing actions to be easier from a local environment vs trying to do everything right here in the repository. Doing these steps locally allows you to use the editor of your choice so that you have all the extensions and snippets you are used to when writing code.
+Our action does not require much metadata for it to run correctly. We will not be accepting any inputs, we will however be setting a single output this time.
 
-If you do not have a preferred environment then we suggest following along exactly as you see on the screen, which means you'll need to install [Visual Studio Code](https://code.visualstudio.com/).
+1. Update the action metadata file `.github/actions/joke-action/action.yml` with the following content:
 
-## Don't forget to set up your workstation
+   ```yaml
+   name: "my joke action"
 
-Most of your work going forward will take place away from your Skills repository, so before continuing with the course ensure you have the following installed on your **local machine**.
+   description: "use an external API to retrieve and display a joke"
 
-1. [ ] [Node.js](https://nodejs.org)
-2. [ ] [Visual Studio Code](https://code.visualstudio.com/) or your editor of choice
-3. [ ] [Git](https://git-scm.com/)
+   outputs:
+     joke-output:
+       description: The resulting joke from the icanhazdadjokes API
 
-### :keyboard: Activity 1: Initialize a new JavaScript project
-
-Once you have the necessary tools installed locally, follow these steps to begin creating your first action.
-
-1. Open the **Terminal** (Mac and Linux) or **Command Prompt** (Windows) on your local machine
-2. Clone your Skills repo to your local machine:
-   ```shell
-   git clone <this repository URL>.git
+   runs:
+     using: "node16"
+     main: "main.js"
    ```
-3. Navigate to the folder you just cloned:
+
+2. Save the `action.yml` file
+3. Commit the changes and push them to GitHub:
    ```shell
-   cd <local folder with cloned repo>
+   git add action.yml
+   git commit -m 'add metadata for the joke action'
+   git pull
+   git push
    ```
-4. We are using branch called `main`.
-   ```shell
-   git switch main
-   ```
-5. Create a new folder for our actions files:
-   ```shell
-   mkdir -p .github/actions/joke-action
-   ```
-6. Navigate to the `joke-action` folder you just created:
-   ```shell
-   cd .github/actions/joke-action
-   ```
-7. Initialize a new project:
-   ```shell
-   npm init -y
-   ```
-8. Install the **request**, **request-promise** and **@actions/core** dependencies using `npm` from the [GitHub ToolKit] (https://github.com/actions/toolkit):
-   ```shell
-   npm install --save request request-promise @actions/core
-   ```
-9. Commit those newly added files,we will remove the need to upload **node_modules** in a later step:
-   ```shell
-   git add .
-   git commit -m 'add project dependencies'
-   ```
-10. Push your changes to your repository:
-    ```shell
-    git push
-    ```
-11. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+4. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
 
 <footer>
 
